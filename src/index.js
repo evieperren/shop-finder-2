@@ -15,7 +15,7 @@ database.once('open', function () {
   
   // Routes 
   app.use('/api', require('./router'))
-  console.log(' i am working here')
+  console.log('Reached src/index.js')
 })
 // this line makes server.listen pass
 module.exports = app
