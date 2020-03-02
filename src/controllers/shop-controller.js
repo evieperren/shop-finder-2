@@ -10,5 +10,8 @@ const ShopController = new Router()
 // ShopController.get('/', (req, res, next) => {
 //   console.log('made it to shop controller ')
 // })
-ShopController.get('/', console.log('made it to shop controller '))
+ShopController.get('/', (req, res, next) => {
+  console.log(req)
+  // console.log('made it to shop controller ')
+})
 module.exports = ShopController

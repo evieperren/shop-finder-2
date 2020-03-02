@@ -8,14 +8,14 @@ const app = express()
 mongoose.connect('mongodb://localhost:27018/shop-finder-2', { useNewUrlParser: true })
 const database = mongoose.connection
 
-database.once('open', () => {
-  // google need for cors
+database.once('open', function () {
   app.use(cors())
-  app.use(bodyParser.urlencoded({extended: true}))
+  app.use(bodyParser.urlencoded({ extended : true }))
   app.use(bodyParser.json())
-
-  console.log('database is connected')
+  
+  // Routes 
   app.use('/api', require('./router'))
+  console.log(' i am working here')
 })
 // this line makes server.listen pass
 module.exports = app
