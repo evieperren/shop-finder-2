@@ -1,0 +1,181 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Shop Finder 2 API"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3020"
+basePath: "/api"
+schemes:
+  - "http"
+
+paths:
+  /admin: 
+    get: 
+      tags: 
+      - "Shop"
+      summary: "List shops" 
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful"
+          schema: 
+            $ref: "#/definitions/shop"
+    post: 
+      tags: 
+      - "Shop"
+      summary: "Create shop"
+      operationId: "addShop"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Shop object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/shop"
+      responses:
+        200:
+          description: "Successful"
+          schema: 
+            $ref: "#/definitions/shop"
+
+    put: 
+      tags: 
+      - "Shop"
+      summary: "Update shop"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: id
+          required: true
+          description: "Shop id"
+          type: "integer"
+          format: "int64"
+        - in: "path"
+          name: name
+          required: true
+          description: "New name"
+          type: "string"
+          format: "string"
+        - in: "path"
+          name: type
+          required: true
+          description: "New type"
+          type: "string"
+          format: "string"
+        - in: "path"
+          name: postcode
+          required: true
+          description: "New postcode"
+          type: "string"
+          format: "string"
+        - in: "path"
+          name: town
+          required: true
+          description: "New town"
+          type: "string"
+          format: "string"
+      responses:
+        200:
+          description: "Successful"
+          schema: 
+            $ref: "#/definitions/shop"
+
+  /admin/{id}:
+      delete:
+        tags: 
+        - "Shop"
+        summary: "Deletes a shop"
+        description: ""
+        operationId: "deleteShop"
+        produces:
+        - "application/json"
+        parameters:
+        - in: "path"
+          name: id
+          required: true
+          description: "Shop id to delete"
+          type: "integer"
+          format: "int64"
+        responses:
+          200: 
+            description: "Deleted"
+            schema:   
+              $ref: "#/definitions/shop"
+          404:
+            description: "Shop not found"
+      get: 
+        tags: 
+        - "Shop"
+        summary: "List one shop" 
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        parameters:
+        - in: "path"
+          name: id
+          required: true
+          description: "Shop id to return"
+          type: "integer"
+          format: "int64"
+        responses:
+          200:
+            description: "Successful"
+            schema: 
+              $ref: "#/definitions/shop"
+
+definitions:
+  shop: 
+    type: "object"
+    properties: 
+      id: 
+        type: "integer"
+        format: "int64"
+      name: 
+        type: "string"
+        example: "Zara"
+      type: 
+        type: "string"
+        enum: 
+          - "Shoe"
+          - "Grocery"
+          - "Clothing"
+      location: 
+        type: "object"
+        properties:
+          postcode: 
+            type: "string"
+            example: "SP10 1DE"
+          town: 
+            type: "string"
+            example: "Andover"
+  admin/shopId: 
+    type: "object"
+    properties: 
+      id: 
+        type: "integer"
+        format: "int64"
+      name: 
+        type: "string"
+        example: "Zara"
+      type: 
+        type: "string"
+        enum: 
+          - "Shoe"
+          - "Grocery"
+          - "Clothing"
+      
