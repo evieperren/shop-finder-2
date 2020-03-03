@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -15,9 +13,8 @@ database.once('open', function () {
   app.use(bodyParser.urlencoded({ extended : true }))
   app.use(bodyParser.json())
   
-  // Routes 
   app.use('/api', require('./router'))
   console.log('Reached src/index.js')
 })
-// this line makes server.listen pass
+
 module.exports = app

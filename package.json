@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "start-dev": "cross-env NODE_ENV=develop npm run build",
-    "start-prod": "cross-env NODE_ENV=production",
+    "start-prod": "cross-env NODE_ENV=production npm run build",
     "build": "nodemon index.js"
   },
   "keywords": [],
