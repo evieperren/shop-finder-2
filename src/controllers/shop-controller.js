@@ -22,25 +22,49 @@ ShopController.post('/', (req, res, next) => {
       town: req.body.location.town
     }
   })
-  res.send(shop)
-  shop.save()
+  try {
+    res.send(shop)
+    shop.save()
+
+  } catch (err) {
+    console.log(new Error(`Error: ${err.message}`))
+  }
 })
 
 // get all 
 ShopController.get('/', async (req, res, next) => {
   const result = await Shop.find()
-  res.json(result)
+    try {
+      res.json(result)
+      
+    } catch (error){
+      console.log( new Error(`Error: ${error} `))
+    }
 })
 
 // get one
 ShopController.get('/:id', async (req, res, next) => {
   const result = await Shop.findById(req.params.id)
-  res.json(result)
+    .then (() => res.json(result))
+    .catch((error) => console.log( new Error(`Error: ${error} `)))
 })
 
-// update all fields
+// update
+ShopController.put('/:id', async (req, res, next) => {
+  await Shop.findById(req.params.id)
+    .then((returnedShop) => {
+      returnedShop.name = req.body.name || returnedShop.name
+      returnedShop.type = req.body.type || returnedShop.type
+      // must include one of these within a change ??
+      returnedShop.location.postcode = req.body.location.postcode || returnedShop.location.postcode
+      returnedShop.location.town = req.body.location.town || returnedShop.location.town
 
-// partial up date
+      returnedShop.save()
+      res.send(returnedShop)
+    })
+    .catch((error) => console.log( new Error(`Error: ${error} `)))
+})
+
 
 // delete 
 ShopController.delete('/:id', async (req, res, next) => {
@@ -50,5 +74,6 @@ ShopController.delete('/:id', async (req, res, next) => {
         "message": `${req.params.id} has been successfully`
       })
     })
+    .catch((error) => console.log( new Error(`Error: ${error} `)))
 })
 module.exports = ShopController

@@ -1,3 +1,9 @@
+require('dotenv').config()
 const server = require('./src')
 
-server.listen((3090), ()=> {console.log('listening on 3090')})
+console.log(process.env.NODE_ENV)
+if(process.env.NODE_ENV === 'develop'){
+  server.listen((process.env.PORT), ()=> {console.log(`listening on ${process.env.PORT}`)})
+} else {
+  console.log(new Error('Sorry unable to connect to API'))
+}
