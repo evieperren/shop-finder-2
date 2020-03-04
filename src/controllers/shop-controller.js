@@ -37,10 +37,6 @@ ShopController.post('/', (req, res, next) => {
 ShopController.get('/', async (req, res, next) => {
     try {
       const result = await Shop.find()
-
-      if(!result || result === undefined){
-        throw new Error('There are no shops in database')
-      }
       res.json(result)
       
     } catch (error){
@@ -52,10 +48,9 @@ ShopController.get('/', async (req, res, next) => {
 ShopController.get('/:id', async (req, res, next) => {
   try {
     const result = await Shop.findById(req.params.id)
-
     res.json(result)
   } catch (error) {
-    console.log( new Error(`Could not find shop. ${error} `))
+    console.log( new Error(`Could not find shop. Please check ID.  ${error} `))
   }
 })
 
@@ -69,7 +64,7 @@ ShopController.put('/:id', async (req, res, next) => {
     // must include one of these within a change ??
     returnedShop.location.postcode = req.body.location.postcode || returnedShop.location.postcode
     returnedShop.location.town = req.body.location.town || returnedShop.location.town
-    returnedShop.location.town = req.body.location.online || returnedShop.location.online
+    returnedShop.location.online = req.body.location.online || returnedShop.location.online
     returnedShop.scale = req.body.scale || returnedShop.scale
   
     returnedShop.save()
