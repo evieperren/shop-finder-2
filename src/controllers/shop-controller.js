@@ -63,17 +63,22 @@ ShopController.get('/:id', async (req, res, next) => {
 ShopController.put('/:id', async (req, res, next) => {
   try {
     const returnedShop = await Shop.findById(req.params.id)
-
+    
     returnedShop.name = req.body.name || returnedShop.name
     returnedShop.type = req.body.type || returnedShop.type
-    // must include one of these within a change ??
     returnedShop.location.postcode = req.body.location.postcode || returnedShop.location.postcode
     returnedShop.location.town = req.body.location.town || returnedShop.location.town
     returnedShop.location.online = req.body.location.online || returnedShop.location.online
     returnedShop.scale = req.body.scale || returnedShop.scale
   
-    returnedShop.save()
-    res.send(returnedShop)
+    returnedShop.validate(function(error){
+      if(error){
+        res.status(400).send(error.message)
+      } else {
+        returnedShop.save()
+        res.send(returnedShop)
+      }
+    })
 
   } catch (error) {
     console.log( new Error(`Error: ${error.message} `))
@@ -84,7 +89,7 @@ ShopController.put('/:id', async (req, res, next) => {
 // delete 
 ShopController.delete('/:id', async (req, res, next) => {
   try {
-    await Shop.findByIdAndRemove(req.params.id)
+    await Shop.findByIdAndDelete(req.params.id)
     res.json({
       "message": `${req.params.id} has been successfully`
     })
@@ -94,30 +99,4 @@ ShopController.delete('/:id', async (req, res, next) => {
   }
 })
 
-// function validate(item, res){
-//   if(item.name === '' || typeof item.name == Number){
-//     res.status(400).send('Please provide a value for the name')
-//   }
-//   if (item.type === '' || typeof item.type == Number ){
-//     res.status(400).send('Please provide a valid value for type')
-//   } 
-//   if (item.location.postcode){
-//     // res.status(400).send('Please provide a valid postcode')
-//     res.send(typeof item.location.postcode)
-
-//   } 
-//   // if (item.location.online !== true || item.location.online !== false){
-//   //   res.status(400).send('Please provide a boolean value')
-//   // } 
-//   // if (item.location.town === '' || typeof item.location.town !== String ){
-//   //   res.status(400).send('Please provide a valid town')
-//   // } 
-//   // else if (item.scale !== 'small' || item.scale !== 'medium' || item.scale !==  'large'){
-//   //   res.status(400).send('Please provide a valid value')
-//   // }
-//   else {
-//     // item.save()
-//     // res.send(item)
-//   }
-// }
 module.exports = ShopController
