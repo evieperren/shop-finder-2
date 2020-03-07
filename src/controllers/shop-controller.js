@@ -35,7 +35,7 @@ ShopController.post('/', (req, res, next) => {
       }
     })
   } catch (error) {
-    res.status(400).send(new Error(error.message))
+    res.status(400).send(`Unable to create shop. ${error.message}`)
   }
 })
 
@@ -45,7 +45,7 @@ ShopController.get('/', async (req, res, next) => {
       const result = await Shop.find().sort('name')
       res.json(result)
     } catch (error){
-      res.status(404).send(new Error(error.message))
+      res.status(404).send(`Unable to find shops. ${error.message}`)
     }
 })
 
@@ -55,7 +55,7 @@ ShopController.get('/:id', async (req, res, next) => {
     const result = await Shop.findById(req.params.id)
     res.json(result)
   } catch (error) {
-    res.status(404).send(new Error(error.message))
+    res.status(404).send((`Unable to find shop. ${error.message}`))
   }
 })
 
@@ -80,7 +80,7 @@ ShopController.put('/:id', async (req, res, next) => {
       }
     })
   } catch (error) {
-    res.status(400).send(new Error(error.message))
+    res.status(400).send(`Unable to update shop. ${error.message}`)
   }
 })
 
@@ -93,7 +93,7 @@ ShopController.delete('/:id', async (req, res, next) => {
       "message": `${req.params.id} has been successfully`
     })
   } catch (error){
-    res.status(400).send(new Error(error.message))
+    res.status(400).send(`Unable to delete shop. ${error.message}`)
   }
 })
 
