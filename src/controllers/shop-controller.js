@@ -25,7 +25,14 @@ ShopController.post('/', (req, res, next) => {
     scale: req.body.scale
   })
   try {
-    validate(shop, res)
+    shop.validate( function(error) {
+      if(error){
+        res.status(400).send(error.message) 
+      } else {
+        shop.save()
+        res.send(shop)
+      }
+    })
   } catch (error) {
     console.log(new Error(`Error: ${error.message}`))
   }
@@ -87,30 +94,30 @@ ShopController.delete('/:id', async (req, res, next) => {
   }
 })
 
-function validate(item, res){
-  if(item.name === '' || typeof item.name == Number){
-    res.status(400).send('Please provide a value for the name')
-  }
-  if (item.type === '' || typeof item.type == Number ){
-    res.status(400).send('Please provide a valid value for type')
-  } 
-  if (item.location.postcode){
-    // res.status(400).send('Please provide a valid postcode')
-    res.send(typeof item.location.postcode)
+// function validate(item, res){
+//   if(item.name === '' || typeof item.name == Number){
+//     res.status(400).send('Please provide a value for the name')
+//   }
+//   if (item.type === '' || typeof item.type == Number ){
+//     res.status(400).send('Please provide a valid value for type')
+//   } 
+//   if (item.location.postcode){
+//     // res.status(400).send('Please provide a valid postcode')
+//     res.send(typeof item.location.postcode)
 
-  } 
-  // if (item.location.online !== true || item.location.online !== false){
-  //   res.status(400).send('Please provide a boolean value')
-  // } 
-  // if (item.location.town === '' || typeof item.location.town !== String ){
-  //   res.status(400).send('Please provide a valid town')
-  // } 
-  // else if (item.scale !== 'small' || item.scale !== 'medium' || item.scale !==  'large'){
-  //   res.status(400).send('Please provide a valid value')
-  // }
-  else {
-    // item.save()
-    // res.send(item)
-  }
-}
+//   } 
+//   // if (item.location.online !== true || item.location.online !== false){
+//   //   res.status(400).send('Please provide a boolean value')
+//   // } 
+//   // if (item.location.town === '' || typeof item.location.town !== String ){
+//   //   res.status(400).send('Please provide a valid town')
+//   // } 
+//   // else if (item.scale !== 'small' || item.scale !== 'medium' || item.scale !==  'large'){
+//   //   res.status(400).send('Please provide a valid value')
+//   // }
+//   else {
+//     // item.save()
+//     // res.send(item)
+//   }
+// }
 module.exports = ShopController
