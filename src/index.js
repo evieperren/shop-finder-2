@@ -5,16 +5,16 @@ const cors = require('cors')
 
 const app = express()
 
-mongoose.connect(`${process.env.DATABASE_NAME}`, { useNewUrlParser: true })
-const database = mongoose.connection
+mongoose.connect(`${process.env.DATABASE_NAME}`, { useNewUrlParser: true , useUnifiedTopology: true })
+  .then(() => {
+    app.use(cors())
+    app.use(bodyParser.urlencoded({ extended : true }))
+    app.use(bodyParser.json())
+    
+    app.use('/api', require('./router'))
+    console.log('Reached src/index.js')
 
-database.once('open', function () {
-  app.use(cors())
-  app.use(bodyParser.urlencoded({ extended : true }))
-  app.use(bodyParser.json())
-  
-  app.use('/api', require('./router'))
-  console.log('Reached src/index.js')
-})
+  })
+  .catch((error) =>  console.log('Could not connect to database'))
 
 module.exports = app

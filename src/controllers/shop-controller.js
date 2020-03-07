@@ -25,22 +25,20 @@ ShopController.post('/', (req, res, next) => {
     scale: req.body.scale
   })
   try {
-    res.send(shop)
-    shop.save()
-
-  } catch (err) {
-    console.log(new Error(`Error: ${err.message}`))
+    validate(shop, res)
+  } catch (error) {
+    console.log(new Error(`Error: ${error.message}`))
   }
 })
 
 // get all 
 ShopController.get('/', async (req, res, next) => {
     try {
-      const result = await Shop.find()
+      const result = await Shop.find().sort('name')
       res.json(result)
       
     } catch (error){
-      console.log( new Error(`Error: ${error} `))
+      console.log( new Error(`Error: ${error.message} `))
     }
 })
 
@@ -50,7 +48,7 @@ ShopController.get('/:id', async (req, res, next) => {
     const result = await Shop.findById(req.params.id)
     res.json(result)
   } catch (error) {
-    console.log( new Error(`Could not find shop. Please check ID.  ${error} `))
+    console.log( new Error(`Could not find shop. Please check ID.  ${error.message} `))
   }
 })
 
@@ -71,7 +69,7 @@ ShopController.put('/:id', async (req, res, next) => {
     res.send(returnedShop)
 
   } catch (error) {
-    console.log( new Error(`Error: ${error} `))
+    console.log( new Error(`Error: ${error.message} `))
   }
 })
 
@@ -85,7 +83,34 @@ ShopController.delete('/:id', async (req, res, next) => {
     })
 
   } catch (error){
-    console.log( new Error(`Error: ${error} `))
+    console.log( new Error(`Error: ${error.message} `))
   }
 })
+
+function validate(item, res){
+  if(item.name === '' || typeof item.name == Number){
+    res.status(400).send('Please provide a value for the name')
+  }
+  if (item.type === '' || typeof item.type == Number ){
+    res.status(400).send('Please provide a valid value for type')
+  } 
+  if (item.location.postcode){
+    // res.status(400).send('Please provide a valid postcode')
+    res.send(typeof item.location.postcode)
+
+  } 
+  // if (item.location.online !== true || item.location.online !== false){
+  //   res.status(400).send('Please provide a boolean value')
+  // } 
+  // if (item.location.town === '' || typeof item.location.town !== String ){
+  //   res.status(400).send('Please provide a valid town')
+  // } 
+  // else if (item.scale !== 'small' || item.scale !== 'medium' || item.scale !==  'large'){
+  //   res.status(400).send('Please provide a valid value')
+  // }
+  else {
+    // item.save()
+    // res.send(item)
+  }
+}
 module.exports = ShopController
