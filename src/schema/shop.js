@@ -6,9 +6,9 @@ const ShopSchema = mongoose.Schema({
     required: [true, 'Please provide a valid value'],
     validate: {
       validator: (value) => {
-        return /([a-zA-Z]+.{2,144})[^<>%\$=]\w/.test(value)
+        return /([a-zA-Z]{1,144})[^<>%$=]\w/.test(value)
       },
-      message: 'Please provide a string between 2 and 144 characters'
+      message: 'Please provide a string between 1 and 144 characters'
     }
   },
   type: {
@@ -46,6 +46,18 @@ const ShopSchema = mongoose.Schema({
         message: 'Please provide a string between 2 and 144 characters'
       }
     },
+    city: {
+      type: String,
+      uppercase: true,
+      trim: true,
+      required: [true, 'Please provide a city'],
+      validate: {
+        validator: (value) => {
+          return /([a-zA-Z]{2,144})\w/.test(value)
+        },
+        message: 'Please provide a string between 2 and 144 characters'
+      }
+    },
     online: {
       type: Boolean,
       required: [true, 'Please provide a boolean value'],
@@ -54,7 +66,7 @@ const ShopSchema = mongoose.Schema({
   scale: {
     type: String,
     required: false,
-    enum: ['small', 'medium', 'large']
+    enum: ['small', 'medium', 'large', 'massive']
   }
 })
 module.exports = ShopSchema

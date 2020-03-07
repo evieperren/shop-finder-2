@@ -14,13 +14,14 @@ ShopController.use('/', (req, res, next) => {
 })
 
 // create 
-ShopController.post('/', (req, res, next) => {
-  shop = new Shop({
+ShopController.post('/', (req, res) => {
+  const shop = new Shop({
     name: req.body.name, 
     type: req.body.type,
     location: {
       postcode: req.body.location.postcode,
       town: req.body.location.town,
+      city: req.body.location.city,
       online: req.body.location.online
     },
     scale: req.body.scale
@@ -40,7 +41,7 @@ ShopController.post('/', (req, res, next) => {
 })
 
 // get all 
-ShopController.get('/', async (req, res, next) => {
+ShopController.get('/', async (req, res) => {
     try {
       const result = await Shop.find().sort('name')
       res.json(result)
@@ -50,7 +51,7 @@ ShopController.get('/', async (req, res, next) => {
 })
 
 // get one
-ShopController.get('/:id', async (req, res, next) => {
+ShopController.get('/:id', async (req, res) => {
   try {
     const result = await Shop.findById(req.params.id)
     res.json(result)
@@ -60,7 +61,7 @@ ShopController.get('/:id', async (req, res, next) => {
 })
 
 // update
-ShopController.put('/:id', async (req, res, next) => {
+ShopController.put('/:id', async (req, res) => {
   try {
     const returnedShop = await Shop.findById(req.params.id)
     
@@ -68,6 +69,7 @@ ShopController.put('/:id', async (req, res, next) => {
     returnedShop.type = req.body.type || returnedShop.type
     returnedShop.location.postcode = req.body.location.postcode || returnedShop.location.postcode
     returnedShop.location.town = req.body.location.town || returnedShop.location.town
+    returnedShop.location.city = req.body.location.city || returnedShop.location.city
     returnedShop.location.online = req.body.location.online || returnedShop.location.online
     returnedShop.scale = req.body.scale || returnedShop.scale
   
@@ -86,7 +88,7 @@ ShopController.put('/:id', async (req, res, next) => {
 
 
 // delete 
-ShopController.delete('/:id', async (req, res, next) => {
+ShopController.delete('/:id', async (req, res) => {
   try {
     await Shop.findByIdAndDelete(req.params.id)
     res.json({
