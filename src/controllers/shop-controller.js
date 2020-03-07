@@ -1,11 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const sanitize = require('mongo-sanitize');
+
 const Router = express.Router
 const ShopSchema = require('../schema/shop')
-
 const Shop = mongoose.model('Shops', ShopSchema)
-
 const ShopController = new Router()
 
 ShopController.use('/', (req, res, next) => {
@@ -32,11 +31,11 @@ ShopController.post('/', (req, res, next) => {
         res.status(400).send(error.message) 
       } else {
         shop.save()
-        res.send(shop)
+        res.status(201).send(shop)
       }
     })
   } catch (error) {
-    console.log(new Error(`Error: ${error.message}`))
+    res.status(400).send(new Error(error.message))
   }
 })
 
@@ -45,9 +44,8 @@ ShopController.get('/', async (req, res, next) => {
     try {
       const result = await Shop.find().sort('name')
       res.json(result)
-      
     } catch (error){
-      console.log( new Error(`Error: ${error.message} `))
+      res.status(404).send(new Error(error.message))
     }
 })
 
@@ -57,7 +55,7 @@ ShopController.get('/:id', async (req, res, next) => {
     const result = await Shop.findById(req.params.id)
     res.json(result)
   } catch (error) {
-    console.log( new Error(`Could not find shop. Please check ID.  ${error.message} `))
+    res.status(404).send(new Error(error.message))
   }
 })
 
@@ -78,12 +76,11 @@ ShopController.put('/:id', async (req, res, next) => {
         res.status(400).send(error.message)
       } else {
         returnedShop.save()
-        res.send(returnedShop)
+        res.status(202).send(returnedShop)
       }
     })
-
   } catch (error) {
-    console.log( new Error(`Error: ${error.message} `))
+    res.status(400).send(new Error(error.message))
   }
 })
 
@@ -95,9 +92,8 @@ ShopController.delete('/:id', async (req, res, next) => {
     res.json({
       "message": `${req.params.id} has been successfully`
     })
-
   } catch (error){
-    console.log( new Error(`Error: ${error.message} `))
+    res.status(400).send(new Error(error.message))
   }
 })
 
