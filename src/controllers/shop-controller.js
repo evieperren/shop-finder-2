@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const sanitize = require('mongo-sanitize');
 const Router = express.Router
 const ShopSchema = require('../schema/shop')
 
@@ -9,6 +10,7 @@ const ShopController = new Router()
 
 ShopController.use('/', (req, res, next) => {
   console.log('Reached src/controllers/shop-controller.js')
+  req.body = sanitize(req.body)
   next()
 })
 

@@ -6,7 +6,7 @@ const ShopSchema = mongoose.Schema({
     required: [true, 'Please provide a valid value'],
     validate: {
       validator: (value) => {
-        return /([a-zA-Z]+.{2,144})\w\w/.test(value)
+        return /([a-zA-Z]+.{2,144})[^<>%\$=]\w/.test(value)
       },
       message: 'Please provide a string between 2 and 144 characters'
     }
