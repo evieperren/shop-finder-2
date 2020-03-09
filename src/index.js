@@ -18,6 +18,9 @@ mongoose.connect(`${process.env.DATABASE_NAME}`, { useNewUrlParser: true , useUn
     console.log('Reached src/index.js')
 
   })
-  .catch((error) =>  console.log(`Could not connect to database. ${error}`))
+  .catch((error) =>  {
+    winston.error(error.message, error)
+    console.log(`Could not connect to database. ${error}`)
+  })
 
 module.exports = app

@@ -99,16 +99,17 @@ ShopController.put('/:id', async (req, res) => {
 // delete 
 ShopController.delete('/:id', async (req, res) => {
   try {
-    try {
-      await Shop.findById(req.params.id)
+    const returnedShop = await Shop.findById(req.params.id)
 
-    } catch (error){
-      winston.log('error', error.message)
-      res.status(400).send(`Unable to delete shop. ${error.message}`)
-    }
-    await Shop.deleteOne({ id: req.params.id})
-    res.json({
-      "message": `${req.params.id} has been successfully`
+    returnedShop.deleteOne({ id: req.params.id}, function(err, res) {
+      
+      if(err){
+        winston.log('error', err.message, err)
+        res.status(400).send(`Unable to delete shop. ${error.message}`)
+      } 
+      res.json({
+        "message": `${req.params.id} has been successfully deleted`
+      })
     })
     
   } catch (error){
