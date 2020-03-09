@@ -1,0 +1,8 @@
+{"level":"error","message":"Cast to ObjectId failed for value \"5e602d9388db9b2b8a3dfd\" at path \"_id\" for model \"Shops\""}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"error is not defined"}
+{"level":"error","message":"Parameter \"filter\" to deleteOne() must be an object, got 5e5d77e1dc14103c746e1209"}
+{"level":"error","message":"Cast to ObjectId failed for value \"5e5d77e1dc14103c7\" at path \"_id\" for model \"Shops\""}
+{"level":"error","message":"Cannot set headers after they are sent to the client"}
+{"level":"error","message":"Cast to ObjectId failed for value \"5e5d78b8006f963cf6d0506\" at path \"_id\" for model \"Shops\""}
+{"level":"error","message":"Cannot set headers after they are sent to the client"}

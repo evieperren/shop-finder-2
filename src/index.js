@@ -2,7 +2,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const winston = require('winston')
 
+
+winston.add( new winston.transports.File({ filename: 'logFile.log'}))
 const app = express()
 
 mongoose.connect(`${process.env.DATABASE_NAME}`, { useNewUrlParser: true , useUnifiedTopology: true })

@@ -7,6 +7,8 @@ const ShopSchema = require('../schema/shop')
 const Shop = mongoose.model('Shops', ShopSchema)
 const ShopController = new Router()
 
+const winston = require('winston')
+
 ShopController.use('/', (req, res, next) => {
   console.log('Reached src/controllers/shop-controller.js')
   req.body = sanitize(req.body)
@@ -29,13 +31,16 @@ ShopController.post('/', (req, res) => {
   try {
     shop.validate( function(error) {
       if(error){
+        winston.log('error', error.message)
         res.status(400).send(error.message) 
+
       } else {
         shop.save()
         res.status(201).send(shop)
       }
     })
   } catch (error) {
+    winston.log('error', error.message)
     res.status(400).send(`Unable to create shop. ${error.message}`)
   }
 })
@@ -46,6 +51,7 @@ ShopController.get('/', async (req, res) => {
       const result = await Shop.find().sort('name')
       res.json(result)
     } catch (error){
+      winston.log('error', error.message)
       res.status(404).send(`Unable to find shops. ${error.message}`)
     }
 })
@@ -56,6 +62,7 @@ ShopController.get('/:id', async (req, res) => {
     const result = await Shop.findById(req.params.id)
     res.json(result)
   } catch (error) {
+    winston.log('error', error.message)
     res.status(404).send((`Unable to find shop. ${error.message}`))
   }
 })
@@ -75,6 +82,7 @@ ShopController.put('/:id', async (req, res) => {
   
     returnedShop.validate(function(error){
       if(error){
+        winston.log('error', error.message)
         res.status(400).send(error.message)
       } else {
         returnedShop.save()
@@ -82,6 +90,7 @@ ShopController.put('/:id', async (req, res) => {
       }
     })
   } catch (error) {
+    winston.log('error', error.message)
     res.status(400).send(`Unable to update shop. ${error.message}`)
   }
 })
@@ -90,11 +99,20 @@ ShopController.put('/:id', async (req, res) => {
 // delete 
 ShopController.delete('/:id', async (req, res) => {
   try {
-    await Shop.findByIdAndDelete(req.params.id)
+    try {
+      await Shop.findById(req.params.id)
+
+    } catch (error){
+      winston.log('error', error.message)
+      res.status(400).send(`Unable to delete shop. ${error.message}`)
+    }
+    await Shop.deleteOne({ id: req.params.id})
     res.json({
       "message": `${req.params.id} has been successfully`
     })
+    
   } catch (error){
+    winston.log('error', error.message)
     res.status(400).send(`Unable to delete shop. ${error.message}`)
   }
 })
